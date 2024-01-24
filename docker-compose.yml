@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+
+  keycloak:
+    # build: .
+    image: docker.io/igorlage/keycloak:0.0.1
+    container_name: keycloak
+    command: ["start-dev"]
+    restart: always
+    environment:
+      # keycloak varables
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      # database varables
+      KC_DB: postgres
+      KC_DB_URL_HOST: keycloak-postgres
+      KC_DB_USERNAME: pguser
+      KC_DB_PASSWORD: pgpass
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_SCHEMA: public
+      KC_HEALTH_ENABLED: true
+    # volumes:
+    #   - ./.docker/keycloak/themes:/opt/keycloak/themes/
+    ports:
+      - 8080:8080
+    depends_on:
+      - keycloak-postgres
+
+  keycloak-postgres:
+    image: postgres:11
+    container_name: keycloak-postgres
+    restart: always
+    volumes:
+      - ./.docker/postgres/data:/var/lib/postgresql/data
+    ports:
+      - 8081:5432
+    healthcheck:
+      test: exit 0
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pgpass
+      POSTGRES_DB: keycloak
