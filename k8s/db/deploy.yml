@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-db
+  template:
+    metadata:
+      labels:
+        app: keycloak-db
+    spec:
+      containers:
+      - name: keycloak-db
+        image: postgres:11
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: pguser
+        - name: POSTGRES_PASSWORD
+          value: pgpass
+        - name: POSTGRES_DB
+          value: keycloak
+        volumeMounts:
+        - name: keycloak-data
+          mountPath: /var/lib/postgresql/keycloak/data
+      volumes:
+      - name: keycloak-data
+        persistentVolumeClaim:
+          claimName: shared-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: keycloak-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      app: keycloak-db

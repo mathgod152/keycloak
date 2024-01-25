@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  selector:
+    matchLabels:
+      app: keycloak
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "keycloak"
+    spec:
+      containers:
+      - name: keycloak
+        # para dsenvolvimento utilize a imagem igorlage/keycloak-dev:0.0.1
+        # para produção utilize a imagem igorlage/keycloak-prod:0.0.1
+        image: igorlage/keycloak-dev:0.0.1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: KEYCLOAK_ADMIN
+          value: admin
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: admin
+        - name: KC_DB
+          value: postgres
+        - name: KC_DB_URL_HOST
+          value: keycloak-db-service
+        - name: KC_DB_USERNAME
+          value: pguser
+        - name: KC_DB_PASSWORD
+          value: pgpass
+        - name: KC_DB_URL_DATABASE
+          value: keycloak
+        - name: KC_DB_SCHEMA
+          value: public
+        # others
+        - name: KC_HOSTNAME
+          value: clinic-manager.com.br
+        - name: KC_HEALTH_ENABLED
+          value: "true"
+        # para produção habilite:
+        # - name: KC_METRICS_ENABLED
+        #   value: "true"
+        # - name: KC_PROXY
+        #   value: "edge"
