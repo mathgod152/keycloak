@@ -46,7 +46,6 @@ Acesse a aplicação em [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
 
 [![Static Badge](https://img.shields.io/badge/Excellent_Sistemas-%23143848?logoColor=white&label=EX&labelColor=black)](https://excellentsistemas.com.br)
 
-![Static Badge](https://img.shields.io/badge/25--01--2024-black) [![GitHub](https://img.shields.io/badge/GitHub-Igor_Lage-blue?style=social&logo=github)](https://github.com/igor-rl) 
 
 
 </div>
